@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Titlu -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Formular"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="#000000"
+            android:layout_marginBottom="25dp" />
+
+        <!-- Foto -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="foto"
+            android:textSize="18sp"
+            android:textColor="#000000" />
+
+        <ImageView
+            android:id="@+id/imageFoto"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="25dp"
+            android:background="#EEEEEE"
+            android:src="@android:drawable/ic_menu_camera"
+            android:scaleType="centerInside"
+            android:contentDescription="Foto" />
+
+        <!-- Nume -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="nume"
+            android:textSize="17sp"
+            android:textColor="#000000" />
+
+        <EditText
+            android:id="@+id/editNume"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Introduceți numele"
+            android:inputType="textPersonName"
+            android:layout_marginBottom="15dp" />
+
+        <!-- Prenume -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="prenume"
+            android:textSize="17sp"
+            android:textColor="#000000" />
+
+        <EditText
+            android:id="@+id/editPrenume"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Introduceți prenumele"
+            android:inputType="textPersonName"
+            android:layout_marginBottom="15dp" />
+
+        <!-- Data nastere -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="data naștere"
+            android:textSize="17sp"
+            android:textColor="#000000" />
+
+        <EditText
+            android:id="@+id/editData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Selectați data"
+            android:focusable="false"
+            android:clickable="true"
+            android:drawableEnd="@android:drawable/ic_menu_my_calendar"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Lista studii -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="lista studii"
+            android:textSize="17sp"
+            android:textColor="#000000" />
+
+        <Spinner
+            android:id="@+id/spinnerStudii"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Sex -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="sex"
+            android:textSize="17sp"
+            android:textColor="#000000" />
+
+        <CheckBox
+            android:id="@+id/checkFeminin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="feminin"
+            android:textSize="17sp"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Specialitatea -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="specialitatea"
+            android:textSize="17sp"
+            android:textColor="#000000" />
+
+        <RadioGroup
+            android:id="@+id/radioSpecialitate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/radioInformatica"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="informatica"
+                android:textSize="17sp" />
+
+            <RadioButton
+                android:id="@+id/radioTehnologii"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="tehnologii"
+                android:textSize="17sp" />
+
+        </RadioGroup>
+
+        <!-- Buton -->
+        <Button
+            android:id="@+id/buttonSalveaza"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SALVEAZĂ"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="20dp" />
+
+    </LinearLayout>
+
+</ScrollView>
