@@ -1,33 +1,46 @@
 package com.example.cv;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
+    ImageView imageProfile;
     EditText editNume, editPrenume, editData;
     Spinner spinnerStudii;
-    CheckBox checkFeminin;
+    CheckBox checkFeminin, checkMasculin;
     RadioButton radioInformatica, radioTehnologii;
     Button buttonSalveaza;
+
+    // Переменная для хранения ссылки на выбранное фото
+    private Uri selectedImageUri = null;
+
+    // Лаунчер для выбора файла из галереи
+    private ActivityResultLauncher<String> imagePickerLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Legarea elementelor XML
+        // Инициализация элементов XML
+        imageProfile = findViewById(R.id.imageProfile);
         editNume = findViewById(R.id.editNume);
         editPrenume = findViewById(R.id.editPrenume);
         editData = findViewById(R.id.editData);
@@ -35,13 +48,28 @@ public class MainActivity extends AppCompatActivity {
         spinnerStudii = findViewById(R.id.spinnerStudii);
 
         checkFeminin = findViewById(R.id.checkFeminin);
+        checkMasculin = findViewById(R.id.checkMasculin);
 
         radioInformatica = findViewById(R.id.radioInformatica);
         radioTehnologii = findViewById(R.id.radioTehnologii);
 
         buttonSalveaza = findViewById(R.id.buttonSalveaza);
 
-        // Lista studii
+        // Регистрация лаунчера для открытия галереи
+        imagePickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.GetContent(),
+                uri -> {
+                    if (uri != null) {
+                        selectedImageUri = uri;
+                        imageProfile.setImageURI(selectedImageUri);
+                    }
+                }
+        );
+
+        // При клике на иконку профиля открывается диалоговое окно
+        imageProfile.setOnClickListener(v -> showImageOptionsDialog());
+
+        // Список категорий обучения (Lista studii)
         String[] studii = {
                 "Superioare",
                 "Medii"
@@ -59,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
         spinnerStudii.setAdapter(adapter);
 
-        // DatePicker
+        // Выбор даты (DatePicker)
         editData.setOnClickListener(v -> {
 
             Calendar calendar = Calendar.getInstance();
@@ -91,26 +119,25 @@ public class MainActivity extends AppCompatActivity {
             datePickerDialog.show();
         });
 
-        // Salvare formular
+        // Сохранение формы
         buttonSalveaza.setOnClickListener(v -> {
 
             String nume = editNume.getText().toString();
             String prenume = editPrenume.getText().toString();
             String data = editData.getText().toString();
 
-            String studii = spinnerStudii.getSelectedItem().toString();
+            String selectedStudii = spinnerStudii.getSelectedItem().toString();
 
             String sex;
-
             if (checkFeminin.isChecked()) {
                 sex = "Feminin";
-            } else {
-                // masculin implicit
+            } else if (checkMasculin.isChecked()) {
                 sex = "Masculin";
+            } else {
+                sex = "Neselectat";
             }
 
             String specialitate;
-
             if (radioInformatica.isChecked()) {
                 specialitate = "Informatica";
             } else if (radioTehnologii.isChecked()) {
@@ -123,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                     "Nume: " + nume +
                             "\nPrenume: " + prenume +
                             "\nData naștere: " + data +
-                            "\nStudii: " + studii +
+                            "\nStudii: " + selectedStudii +
                             "\nSex: " + sex +
                             "\nSpecialitate: " + specialitate;
 
@@ -133,5 +160,32 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG
             ).show();
         });
+    }
+
+    // Диалог с выбором действия: Загрузка/Изменение или Удаление фото
+    private void showImageOptionsDialog() {
+        String[] options;
+
+        if (selectedImageUri != null) {
+            options = new String[]{"Schimbă imaginea", "Șterge imaginea"};
+        } else {
+            options = new String[]{"Alege imaginea"};
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Imagine de profil");
+        builder.setItems(options, (dialog, which) -> {
+            if (options[which].equals("Alege imaginea") || options[which].equals("Schimbă imaginea")) {
+                // Открыть галерею для выбора/замены
+                imagePickerLauncher.launch("image/*");
+            } else if (options[which].equals("Șterge imaginea")) {
+                // Удалить выбранную картинку и вернуть иконку по умолчанию
+                selectedImageUri = null;
+                imageProfile.setImageResource(android.R.drawable.ic_menu_camera);
+                Toast.makeText(this, "Imaginea a fost ștearsă", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Anulează", (dialog, which) -> dialog.dismiss());
+        builder.show();
     }
 }
